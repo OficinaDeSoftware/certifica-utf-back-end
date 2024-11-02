@@ -1,9 +1,10 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.model;
 
 public enum ProviderEnum {
-    GOOGLE;
+    GOOGLE,
+    UTFPR;
 
-    public static ProviderEnum parse(String name) {
-        return valueOf(name.toUpperCase());
+    public static ProviderEnum parse( String name ) {
+        return valueOf( name.toUpperCase() );
     }
 }

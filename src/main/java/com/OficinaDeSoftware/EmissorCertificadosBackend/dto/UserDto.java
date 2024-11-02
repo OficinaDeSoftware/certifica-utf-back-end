@@ -20,8 +20,6 @@ public class UserDto {
     private String name;
     @NotNull
     private String email;
-    private String urlImagemPerfil;
-    private Integer tipousuario;
     private String accessToken;
     @NotNull
     private List<RoleEnum> roles;

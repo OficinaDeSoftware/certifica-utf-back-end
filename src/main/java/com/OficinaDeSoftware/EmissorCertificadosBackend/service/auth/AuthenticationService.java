@@ -1,9 +1,11 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.service.auth;
 
 import java.util.Arrays;
+import java.util.List;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.service.auth.Provider.ProviderTokenServiceFactory;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.service.exception.UnknowProviderTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.converter.UserConverter;
@@ -25,19 +27,21 @@ public class AuthenticationService {
     @Autowired
     private UserConverter userConverter;
 
-    private ProviderTokenService providerTokenService;
+    private final ProviderTokenServiceFactory providerTokenServiceFactory;
 
-    public AuthenticationService( ProviderTokenService providerToken ){
-        this.providerTokenService = providerToken;
+    public AuthenticationService( ProviderTokenServiceFactory providerTokenServiceFactory ){
+        this.providerTokenServiceFactory = providerTokenServiceFactory;
     }
     
     public UserDto authenticate( CredentialsDto credentialsDto ) throws RuntimeException {
 
-        if( credentialsDto.getTypeProvider() != ProviderEnum.GOOGLE ){
-            throw new RuntimeException("Unknow provider");
+        ProviderTokenService providerTokenService = providerTokenServiceFactory.getService( credentialsDto.typeProvider() );
+
+        if( providerTokenService == null ) {
+            throw new UnknowProviderTokenException();
         }
 
-        final ProviderModel provider = providerTokenService.process( credentialsDto.getIdToken() );
+        final ProviderModel provider = providerTokenService.process( credentialsDto );
 
         final User registeredUser = userService.findByNrUuid( provider.getNrUuid() );
 
@@ -51,7 +55,7 @@ public class AuthenticationService {
     public UserDto registerUser( final ProviderModel provider ) {
 
         UserDto userDto = userConverter.convertToDto( provider );
-        userDto.setRoles( Arrays.asList( RoleEnum.ROLE_USER ) );
+        userDto.setRoles( List.of( RoleEnum.ROLE_USER ) );
         userService.save( userDto );
 
         return userDto;

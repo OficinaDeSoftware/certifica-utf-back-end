@@ -14,22 +14,25 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
 
-    @Autowired
-    private UserConverter userConverter;
+    private final UserConverter userConverter;
+
+    public UserService( UserRepository repository, UserConverter userConverter) {
+        this.repository = repository;
+        this.userConverter = userConverter;
+    }
 
     public List<User> findAll() {
         return repository.findAll();
     }
 
     public void save(final UserDto userDto) {
-        this.repository.save(userConverter.convertToEntity(userDto));
+        repository.save( userConverter.convertToEntity( userDto ) );
     }
 
-    public User findByNrUuid(final String nrUuid) {
-        return repository.findById(nrUuid).orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
+    public User findByNrUuid( final String nrUuid ) {
+        return repository.findById(nrUuid).orElse(null);
     }
     
 }

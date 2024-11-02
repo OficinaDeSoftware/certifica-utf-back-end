@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,9 +21,11 @@ public class UsernamePasswordAuthFilter extends OncePerRequestFilter {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final UserAuthenticationProvider userAuthenticationProvider;
+    private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
 
-    public UsernamePasswordAuthFilter(UserAuthenticationProvider userAuthenticationProvider) {
+    public UsernamePasswordAuthFilter(UserAuthenticationProvider userAuthenticationProvider, UserAuthenticationEntryPoint userAuthenticationEntryPoint) {
         this.userAuthenticationProvider = userAuthenticationProvider;
+        this.userAuthenticationEntryPoint = userAuthenticationEntryPoint;
     }
 
     @Override
@@ -38,9 +41,9 @@ public class UsernamePasswordAuthFilter extends OncePerRequestFilter {
 
             try {
                 SecurityContextHolder.getContext().setAuthentication( userAuthenticationProvider.validateCredentials(credentialsDto) );
-            } catch ( RuntimeException e ) {
+            } catch ( AuthenticationException e ) {
                 SecurityContextHolder.clearContext();
-                throw e;
+                userAuthenticationEntryPoint.commence(httpServletRequest, httpServletResponse, e);
             } 
         }
 
