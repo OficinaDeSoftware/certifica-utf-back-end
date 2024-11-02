@@ -26,17 +26,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
-                .and()
-                .addFilterBefore(new UsernamePasswordAuthFilter(userAuthenticationProvider), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JwtAuthFilter(userAuthenticationProvider), UsernamePasswordAuthFilter.class)
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "/api/auth/signIn").permitAll()
-                        .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
-                        .anyRequest().authenticated() );
+        .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
+        .and()
+        .addFilterBefore(new UsernamePasswordAuthFilter(userAuthenticationProvider, userAuthenticationEntryPoint), BasicAuthenticationFilter.class)
+        .addFilterBefore(new JwtAuthFilter(userAuthenticationProvider), UsernamePasswordAuthFilter.class)
+        .csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeHttpRequests((requests) -> requests
+                .requestMatchers(HttpMethod.POST, "/api/auth/signIn").permitAll()
+                .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
+                .anyRequest().authenticated() );
         return http.build();
     }
 }

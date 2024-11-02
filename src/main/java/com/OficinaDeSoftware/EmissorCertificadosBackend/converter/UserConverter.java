@@ -3,7 +3,6 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.converter;
 import java.util.Objects;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.User;
@@ -13,8 +12,11 @@ import com.OficinaDeSoftware.EmissorCertificadosBackend.model.ProviderModel;
 @Component
 public class UserConverter {
 
-  @Autowired
-  private ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
+
+  public UserConverter(ModelMapper modelMapper) {
+    this.modelMapper = modelMapper;
+  }
 
   public UserDto convertToDto( final ProviderModel provider ){
 
