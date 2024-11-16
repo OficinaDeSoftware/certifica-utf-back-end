@@ -3,6 +3,7 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.service.auth;
 import java.util.Arrays;
 import java.util.List;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.producer.EmailProducer;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.service.auth.Provider.ProviderTokenServiceFactory;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.service.exception.UnknowProviderTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import com.OficinaDeSoftware.EmissorCertificadosBackend.converter.UserConverter;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.User;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.CredentialsDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.UserDto;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.model.ProviderEnum;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.model.ProviderModel;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.model.RoleEnum;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.service.UserService;
@@ -28,9 +28,11 @@ public class AuthenticationService {
     private UserConverter userConverter;
 
     private final ProviderTokenServiceFactory providerTokenServiceFactory;
+    private final EmailProducer emailProducer;
 
-    public AuthenticationService( ProviderTokenServiceFactory providerTokenServiceFactory ){
+    public AuthenticationService(ProviderTokenServiceFactory providerTokenServiceFactory, EmailProducer emailProducer){
         this.providerTokenServiceFactory = providerTokenServiceFactory;
+        this.emailProducer = emailProducer;
     }
     
     public UserDto authenticate( CredentialsDto credentialsDto ) throws RuntimeException {
@@ -57,6 +59,8 @@ public class AuthenticationService {
         UserDto userDto = userConverter.convertToDto( provider );
         userDto.setRoles( List.of( RoleEnum.ROLE_USER ) );
         userService.save( userDto );
+
+        emailProducer.register( userDto );
 
         return userDto;
     }
