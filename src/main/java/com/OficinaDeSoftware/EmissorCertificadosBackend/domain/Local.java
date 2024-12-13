@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +16,8 @@ import lombok.NoArgsConstructor;
 public class Local {
     
     @Id
-    private String idLocal;
+    private UUID idLocal;
+
     private String dsAuditorio;
     private String dsBloco;
     private String dsSala;

@@ -1,8 +1,7 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.dto;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.OficinaDeSoftware.EmissorCertificadosBackend.model.RoleEnum;
+import jakarta.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
