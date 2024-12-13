@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventoCheckin;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.EventoCheckinDto;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.model.ProviderModel;
 
 @Component
 public class EventoCheckinConverter {
@@ -16,11 +15,6 @@ public class EventoCheckinConverter {
   @Autowired
   private ModelMapper modelMapper;
 
-  public EventoCheckinDto convertToDto( final ProviderModel provider ){
-
-    return Objects.isNull(provider) ? null : modelMapper.map( provider, EventoCheckinDto.class );
-    
-  }
 
   public EventoCheckinDto convertToDto( final EventoCheckin user ) {
 

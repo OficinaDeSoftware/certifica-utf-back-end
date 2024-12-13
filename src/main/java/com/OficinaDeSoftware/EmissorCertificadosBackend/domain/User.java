@@ -2,10 +2,9 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.domain;
 
 import java.util.List;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.model.RoleEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.OficinaDeSoftware.EmissorCertificadosBackend.model.RoleEnum;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

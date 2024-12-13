@@ -4,10 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -47,6 +45,9 @@ public class EventoDto {
     @JsonProperty("participants")
     List<User> participantes;
 
+    @JsonProperty("backgroundImage")
+    MultipartFile backgroundImage;
+
     @JsonIgnore
     private String idLocal;
 
@@ -55,6 +56,9 @@ public class EventoDto {
 
     @JsonProperty( "certificate" )
     private CertificadoDto certificado;
+
+    @JsonProperty("local")
+    private LocalDto local;
 
 }
 

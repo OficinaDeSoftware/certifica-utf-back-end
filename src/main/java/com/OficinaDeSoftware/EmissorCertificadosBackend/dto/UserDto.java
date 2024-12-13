@@ -1,8 +1,7 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.dto;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.OficinaDeSoftware.EmissorCertificadosBackend.model.RoleEnum;
+import jakarta.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -20,8 +19,6 @@ public class UserDto {
     private String name;
     @NotNull
     private String email;
-    private String urlImagemPerfil;
-    private Integer tipousuario;
     private String accessToken;
     @NotNull
     private List<RoleEnum> roles;
