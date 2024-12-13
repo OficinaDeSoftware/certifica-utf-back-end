@@ -8,19 +8,12 @@ import org.springframework.stereotype.Component;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.Certificado;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.CertificadoDto;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.model.ProviderModel;
 
 @Component
 public class CertificadoConverter {
 
   @Autowired
   private ModelMapper modelMapper;
-
-  public CertificadoDto convertToDto( final ProviderModel provider ){
-
-    return Objects.isNull(provider) ? null : modelMapper.map( provider, CertificadoDto.class );
-    
-  }
 
   public CertificadoDto convertToDto( final Certificado user ) {
 

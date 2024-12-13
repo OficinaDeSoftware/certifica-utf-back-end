@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.User;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.UserDto;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.model.ProviderModel;
 
 @Component
 public class UserConverter {
@@ -18,11 +17,6 @@ public class UserConverter {
     this.modelMapper = modelMapper;
   }
 
-  public UserDto convertToDto( final ProviderModel provider ){
-
-    return Objects.isNull(provider) ? null : modelMapper.map( provider, UserDto.class );
-    
-  }
 
   public UserDto convertToDto( final User user ) {
 

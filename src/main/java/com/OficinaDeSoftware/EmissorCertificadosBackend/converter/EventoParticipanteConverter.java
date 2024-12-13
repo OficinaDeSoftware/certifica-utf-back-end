@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventoParticipante;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.EventoParticipanteDto;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.model.ProviderModel;
 
 @Component
 public class EventoParticipanteConverter {
@@ -16,11 +15,6 @@ public class EventoParticipanteConverter {
   @Autowired
   private ModelMapper modelMapper;
 
-  public EventoParticipanteDto convertToDto( final ProviderModel provider ){
-
-    return Objects.isNull(provider) ? null : modelMapper.map( provider, EventoParticipanteDto.class );
-    
-  }
 
   public EventoParticipanteDto convertToDto( final EventoParticipante user ) {
 
