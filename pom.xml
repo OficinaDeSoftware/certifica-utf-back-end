@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.OficinaDeSoftware</groupId>
-	<artifactId>EmissorCertificadosBackend</artifactId>
+	<artifactId>certifica-utf-back-end</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>EmissorCertificadosBackend</name>
+	<name>certifica-utf-back-end</name>
 	<description>Projeto backend para emissão de certificados</description>
 	<properties>
 		<java.version>17</java.version>
