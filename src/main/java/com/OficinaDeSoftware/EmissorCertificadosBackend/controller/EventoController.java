@@ -2,15 +2,10 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.service.uploader.firebase.UploaderFirebaseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventoPersonalizado;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.EventoDto;
@@ -20,8 +15,11 @@ import com.OficinaDeSoftware.EmissorCertificadosBackend.service.EventoService;
 @RequestMapping("/api/evento")
 public class EventoController {
     
-    @Autowired
-    private EventoService service;
+    private final EventoService service;
+
+    public EventoController(EventoService service, UploaderFirebaseService uploaderFirebaseService) {
+        this.service = service;
+    }
 
     @GetMapping( "/{id}" )
     public ResponseEntity<EventoDto> findOne( @PathVariable String id ){

@@ -30,9 +30,7 @@ public class Evento {
     private String nrUuidResponsavel;
     private String idLocal;
     private Local local;
-
-    @Transient
-    MultipartFile backgroundImage;
+    private String dsBackgroundImageUrl;
 
     @Transient
     List<User> participantes;
