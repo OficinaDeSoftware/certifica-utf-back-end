@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.service.uploader.firebase.UploaderFirebaseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,20 +26,33 @@ import com.OficinaDeSoftware.EmissorCertificadosBackend.service.exception.Object
 @Service
 public class EventoService {
     
-    @Autowired
-    private EventoRepository repository;
-    @Autowired
-    private EventoConverter converter;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private LocalService localService;
-    @Autowired
-    private CertificadoRepository certificadoRepository;
-    @Autowired
-    private DateEventRepository dateEventRepository;
-    @Autowired
-    private EventoParticipanteService participanteService;
+    private final EventoRepository repository;
+    private final EventoConverter converter;
+    private final UserService userService;
+    private final LocalService localService;
+    private final CertificadoRepository certificadoRepository;
+    private final DateEventRepository dateEventRepository;
+    private final EventoParticipanteService participanteService;
+    private final UploaderFirebaseService uploaderFirebaseService;
+
+    public EventoService(
+            EventoParticipanteService participanteService,
+            DateEventRepository dateEventRepository,
+            CertificadoRepository certificadoRepository,
+            EventoRepository repository, EventoConverter converter,
+            UserService userService,
+            LocalService localService,
+            UploaderFirebaseService uploaderFirebaseService
+    ) {
+        this.participanteService = participanteService;
+        this.dateEventRepository = dateEventRepository;
+        this.certificadoRepository = certificadoRepository;
+        this.repository = repository;
+        this.converter = converter;
+        this.userService = userService;
+        this.localService = localService;
+        this.uploaderFirebaseService = uploaderFirebaseService;
+    }
 
     public List<EventoDto> findAllAsDto() {
         return 
@@ -119,7 +133,11 @@ public class EventoService {
 
     public EventoDto insert( EventoDto evento ) {
 
+        final String dsBackgroundImageUrl = uploaderFirebaseService.image( evento.getBackgroundImage() );
+
         Evento event = converter.convertToEntity(evento);
+
+        event.setDsBackgroundImageUrl( dsBackgroundImageUrl );
         
         Evento newEvent = repository.insert( event );
 
