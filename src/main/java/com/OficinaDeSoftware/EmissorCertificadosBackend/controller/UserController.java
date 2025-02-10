@@ -2,7 +2,10 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.controller;
 
 import java.util.List;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.Response.UserResponseDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,11 +26,9 @@ public class UserController {
         return service.findAll();
     }
 
-    // Example 
-    // @PostMapping( "/create" )
-    // @ResponseStatus( HttpStatus.CREATED )
-    // public void save( @RequestBody User user ){
-    //     service.save( user );
-    // }
+    @GetMapping("/{nrUuid}")
+    public ResponseEntity<UserResponseDto> findById(@PathVariable String nrUuid){
+        return ResponseEntity.ok(service.getByNrUuid(nrUuid));
+    }
 
 }
