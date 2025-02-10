@@ -1,5 +1,7 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.service;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.converter.UserResponseConverter;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.Response.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,12 @@ public class UserService {
 
     private final UserConverter userConverter;
 
-    public UserService( UserRepository repository, UserConverter userConverter) {
+    private final UserResponseConverter userResponseConverter;
+
+    public UserService( UserRepository repository, UserConverter userConverter, UserResponseConverter userResponseConverter) {
         this.repository = repository;
         this.userConverter = userConverter;
+        this.userResponseConverter = userResponseConverter;
     }
 
     public List<User> findAll() {
@@ -33,6 +38,12 @@ public class UserService {
 
     public User findByNrUuid( final String nrUuid ) {
         return repository.findById(nrUuid).orElse(null);
+    }
+
+    public UserResponseDto getByNrUuid(final String nrUuid ) {
+        return repository.findById(nrUuid)
+                .map(userResponseConverter::convertToDto)
+                .orElse(null);
     }
     
 }
