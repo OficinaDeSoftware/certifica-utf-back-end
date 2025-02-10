@@ -1,15 +1,13 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.service;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.converter.UserResponseConverter;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.Response.UserResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.UserResponseDto;
 import org.springframework.stereotype.Service;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.converter.UserConverter;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.User;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.UserDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.repository.UserRepository;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.service.exception.ObjectNotFoundException;
 
 import java.util.List;
 

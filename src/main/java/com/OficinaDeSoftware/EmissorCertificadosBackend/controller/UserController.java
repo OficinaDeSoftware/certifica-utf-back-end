@@ -2,7 +2,7 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.controller;
 
 import java.util.List;
 
-import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.Response.UserResponseDto;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.UserResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -4,6 +4,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.User;
 
+import java.util.List;
+
 public interface UserRepository extends MongoRepository<User, String> {
-    public User findByEmail( String email ); 
+     User findByEmail( String email );
+     List<User> findByNrUuidIn( List<String> nrUuids );
 }
