@@ -6,8 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventoParticipante;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.EventoParticipanteDto;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventParticipant;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.EventParticipantDto;
 
 @Component
 public class EventoParticipanteConverter {
@@ -16,15 +16,15 @@ public class EventoParticipanteConverter {
   private ModelMapper modelMapper;
 
 
-  public EventoParticipanteDto convertToDto( final EventoParticipante user ) {
+  public EventParticipantDto convertToDto(final EventParticipant user ) {
 
-    return Objects.isNull(user) ? null : modelMapper.map( user, EventoParticipanteDto.class );
+    return Objects.isNull(user) ? null : modelMapper.map( user, EventParticipantDto.class );
 
   } 
 
-  public EventoParticipante convertToEntity( final EventoParticipanteDto dto ) {
+  public EventParticipant convertToEntity(final EventParticipantDto dto ) {
 
-    return Objects.isNull(dto) ? null : modelMapper.map( dto, EventoParticipante.class );
+    return Objects.isNull(dto) ? null : modelMapper.map( dto, EventParticipant.class );
     
   }
 

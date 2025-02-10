@@ -1,29 +1,23 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.dto;
 
-import java.io.Serializable;
-
-import org.springframework.data.annotation.Id;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+public class DateEventDto {
 
-public class DateEventDto implements Serializable {
+        private String title;
 
-    @JsonIgnore
-    @Id
-    private String idDateEvent;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+        private LocalDate date;
 
-    @JsonIgnore
-    private String idEvento;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+        private LocalTime startTime;
 
-    private String date;
-    private String startTime;
-    private String endTime;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+        private LocalTime endTime;
+
 }

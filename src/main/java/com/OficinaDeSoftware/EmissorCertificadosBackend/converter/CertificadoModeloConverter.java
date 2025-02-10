@@ -6,7 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.CertificadoModelo;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.CertificateModel;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.CertificadoModeloDto;
 
 @Component
@@ -15,15 +15,15 @@ public class CertificadoModeloConverter {
   @Autowired
   private ModelMapper modelMapper;
 
-  public CertificadoModeloDto convertToDto( final CertificadoModelo user ) {
+  public CertificadoModeloDto convertToDto( final CertificateModel user ) {
 
     return Objects.isNull(user) ? null : modelMapper.map( user, CertificadoModeloDto.class );
 
   } 
 
-  public CertificadoModelo convertToEntity( final CertificadoModeloDto dto ) {
+  public CertificateModel convertToEntity(final CertificadoModeloDto dto ) {
 
-    return Objects.isNull(dto) ? null : modelMapper.map( dto, CertificadoModelo.class );
+    return Objects.isNull(dto) ? null : modelMapper.map( dto, CertificateModel.class );
     
   }
 

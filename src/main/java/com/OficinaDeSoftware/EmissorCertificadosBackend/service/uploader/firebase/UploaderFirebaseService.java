@@ -16,6 +16,10 @@ public class UploaderFirebaseService {
 
     public String image( final MultipartFile file ) {
 
+        if( file == null ) {
+            return null;
+        }
+
        final UploaderImageResponse response = uploaderFirebaseEndpoint.image( file ).getBody();
 
        if( response == null ) {

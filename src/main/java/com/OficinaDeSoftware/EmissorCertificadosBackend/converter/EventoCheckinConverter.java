@@ -6,8 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventoCheckin;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.EventoCheckinDto;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventCheckin;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.EventCheckinDto;
 
 @Component
 public class EventoCheckinConverter {
@@ -16,15 +16,15 @@ public class EventoCheckinConverter {
   private ModelMapper modelMapper;
 
 
-  public EventoCheckinDto convertToDto( final EventoCheckin user ) {
+  public EventCheckinDto convertToDto(final EventCheckin user ) {
 
-    return Objects.isNull(user) ? null : modelMapper.map( user, EventoCheckinDto.class );
+    return Objects.isNull(user) ? null : modelMapper.map( user, EventCheckinDto.class );
 
   } 
 
-  public EventoCheckin convertToEntity( final EventoCheckinDto dto ) {
+  public EventCheckin convertToEntity(final EventCheckinDto dto ) {
 
-    return Objects.isNull(dto) ? null : modelMapper.map( dto, EventoCheckin.class );
+    return Objects.isNull(dto) ? null : modelMapper.map( dto, EventCheckin.class );
     
   }
 
