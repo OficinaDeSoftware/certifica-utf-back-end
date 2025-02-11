@@ -3,9 +3,10 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.CertificadoDto;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.CertificateDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.DateEventDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.LocalDto;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.model.EventStatusEnum;
 import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.Id;
@@ -33,7 +34,7 @@ public class EventResponseDto {
 
     private List<DateEventDto> dates;
 
-    private CertificadoDto certificate;
+    private CertificateDto certificate;
 
     private Integer workload;
 
@@ -42,6 +43,8 @@ public class EventResponseDto {
     private LocalDto location;
 
     private String backgroundUrl;
+
+    private EventStatusEnum status;
 
 }
 

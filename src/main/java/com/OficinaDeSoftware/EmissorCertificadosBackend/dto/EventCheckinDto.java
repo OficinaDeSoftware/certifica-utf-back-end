@@ -25,4 +25,6 @@ public class EventCheckinDto {
     private String nrUuidParticipant;
 
     private String idEvent;
+
+    private int idDateEvent;
 }

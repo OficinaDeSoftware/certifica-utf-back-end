@@ -42,14 +42,21 @@ public class EventController {
         return ResponseEntity.ok().body( service.insert( eventRequest ) );
     }
 
-    @PutMapping("{idEvent}")
+    @PutMapping("/{idEvent}")
     public ResponseEntity<EventResponseDto> update(@PathVariable String idEvent, @RequestBody EventRequestDto eventRequest) {
         return ResponseEntity.ok().body( service.update( idEvent, eventRequest ) );
     }
 
-    @DeleteMapping("{idEvent}")
+    @DeleteMapping("/{idEvent}")
     public ResponseEntity<MessageResponse> delete(@PathVariable String idEvent) {
         service.delete( idEvent );
         return ResponseEntity.ok().body( new MessageResponse( "Evento deletado com sucesso!" ) );
     }
+
+    @PostMapping("/{idEvent}/finished")
+    public ResponseEntity<MessageResponse> update( @PathVariable String idEvent ) {
+        service.finished( idEvent );
+        return ResponseEntity.ok().body( new MessageResponse("Evento finalizado com sucesso!" ) );
+    }
+
 }

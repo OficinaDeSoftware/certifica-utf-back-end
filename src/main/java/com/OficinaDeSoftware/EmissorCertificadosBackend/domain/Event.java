@@ -3,6 +3,7 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.domain;
 import java.util.List;
 import java.time.LocalDate;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.model.EventStatusEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -27,6 +28,8 @@ public class Event {
     private Location location;
     private List<DateEvent> dates;
     private Certificate certificate;
+    private EventStatusEnum status = EventStatusEnum.IN_PROGRESS;
+    private String backgroundUrl;
 
 //    @Transient
 //    List<User> participantes;

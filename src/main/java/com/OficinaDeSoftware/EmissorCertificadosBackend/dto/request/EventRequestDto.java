@@ -1,6 +1,6 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.dto.request;
 
-import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.CertificadoDto;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.CertificateDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.DateEventDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.LocalDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -22,7 +22,9 @@ public class EventRequestDto {
 
         private List<DateEventDto> dates;
 
-        private CertificadoDto certificate;
+        private CertificateDto certificate;
+
+        private String backgroundUrl;
 
         private Integer workload;
 

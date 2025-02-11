@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Model {
 
     @Id
-    private String idModelo;
-    private String htmlModelo;
+    private String id;
+    private String html;
     private String previewUrl;
 }

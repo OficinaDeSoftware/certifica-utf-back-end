@@ -9,6 +9,8 @@ import java.time.LocalTime;
 @Data
 public class DateEventDto {
 
+        private int id;
+
         private String title;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")

@@ -1,16 +1,17 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.dto;
 
-
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class CertificadoDto {
+public class CertificateDto {
 
-    private Integer modelId;
+    private String modelId;
 
     private String complement;
+
+    private String issuerLogoUrl;
 
     private List<CertificateResponsibleDto> responsible;
 
