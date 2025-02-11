@@ -79,6 +79,8 @@ public class ModelService {
         context.setVariable("date", date );
         context.setVariable("occupation", responsible.getOccupation() );
         context.setVariable("signature", responsible.getSignature() );
+        context.setVariable("logoUrl", event.getCertificate().getIssuerLogoUrl() );
+        context.setVariable( "description", event.getCertificate().getComplement() );
 
         return context;
     }

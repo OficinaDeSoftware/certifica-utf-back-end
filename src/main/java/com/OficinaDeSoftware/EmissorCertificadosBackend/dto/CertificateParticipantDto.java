@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CertificateParticipantDto {
 
-    private int id;
+    private String id;
 
     private String idEvent;
 
