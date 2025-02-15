@@ -1,18 +1,20 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.dto;
 
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ModelDto {
+@NoArgsConstructor
+public class CertificateParticipantDto {
 
     private String id;
 
-    private String html;
+    private String idEvent;
 
-    private String previewUrl;
+    private String nrUuidParticipant;
+
+    private String certificateUrl;
 
 }

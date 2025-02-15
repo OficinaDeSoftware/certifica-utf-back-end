@@ -64,7 +64,7 @@ public class EventParticipantService {
         return repository.findAllByNrUuidParticipant( nrUuidParticipant );
     }
 
-    public List<UserResponseDto> findAllByIdEvent(final String idEvent ) {
+    public List<UserResponseDto> findAllByIdEvent( final String idEvent ) {
 
         final List<String> nrUuidParticipants = repository
                 .findAllByIdEvent( idEvent )

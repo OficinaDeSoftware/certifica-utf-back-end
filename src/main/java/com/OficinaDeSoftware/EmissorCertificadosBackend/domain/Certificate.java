@@ -14,9 +14,11 @@ import lombok.NoArgsConstructor;
 @Document(collection = "certificate")
 public class Certificate {
 
-    private Integer modelId;
+    private String modelId;
 
     private String complement;
+
+    private String issuerLogoUrl;
 
     private List<CertificateResposible> responsible;
 

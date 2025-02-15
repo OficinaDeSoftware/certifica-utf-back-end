@@ -1,9 +1,11 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.producer;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.Event;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.UserDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.producer.EmailPayloadDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.producer.EmailTemplateContextDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.producer.EmailTemplateDto;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.UserResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +27,39 @@ public class EmailProducer {
     @Value(value = "${broker.queue.email.name}")
     private String routingKey;
 
+    EmailPayloadDto toConclusion( UserResponseDto userDto, final String certificateUrl, Event event ) {
+
+        log.info( "Enviando email de conclusão do evento" );
+
+        // TODO pensar em alguma maneira de tirar esses codigos fixos ( application.properties ? tabela no banco ? )
+
+        List<EmailTemplateContextDto> contexts = Arrays.asList(
+                new EmailTemplateContextDto("logoUrl", "https://firebasestorage.googleapis.com/v0/b/certifica-utf.appspot.com/o/logo.png?alt=media"),
+                new EmailTemplateContextDto("receiverName", userDto.getName() ),
+                new EmailTemplateContextDto("certificadoUrl", certificateUrl ),
+                new EmailTemplateContextDto("aplicationName", "CertificaUTF" ),
+                new EmailTemplateContextDto("nameEvent", event.getName() )
+        );
+
+        EmailTemplateDto emailTemplateDTO = new EmailTemplateDto(
+                "conclusion",
+                contexts
+        );
+
+        EmailPayloadDto emailPayloadDto = new EmailPayloadDto(
+                userDto.getNrUuid(),
+                "Parabéns! Evento concluido.",
+                userDto.getEmail(),
+                emailTemplateDTO
+        );
+
+        log.info( "Enviando o payload de conclusão do evento");
+
+        return emailPayloadDto;
+
+    }
+
+    // TODO migrar para o auth
     EmailPayloadDto toRegister( UserDto userDto ) {
 
         log.info( "Enviando email de novo usuario" );
@@ -58,6 +93,10 @@ public class EmailProducer {
 
     public void register( UserDto userDto ) {
         send( toRegister( userDto ) );
+    }
+
+    public void conclusion(UserResponseDto userDto, final String certificateUrl, Event event) {
+        send( toConclusion( userDto, certificateUrl, event ) );
     }
 
     void send( EmailPayloadDto emailPayloadDTO ) {

@@ -2,44 +2,42 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventParticipant;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.EventBasicResponseDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.request.EventRequestDto;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.service.uploader.firebase.UploaderFirebaseService;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.UserResponseDto;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.model.EventStatusEnum;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.converter.EventoConverter;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.Event;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.EventResponseDto;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.repository.CertificateRepository;
-import com.OficinaDeSoftware.EmissorCertificadosBackend.repository.DateEventRepository;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.repository.EventRepository;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.service.exception.ObjectNotFoundException;
 
+@Slf4j
 @Service
 public class EventService {
     
     private final EventRepository repository;
     private final EventoConverter converter;
-    private final UserService userService;
-    private final UploaderFirebaseService uploaderFirebaseService;
     private final EventParticipantService eventParticipantService;
+    private final CertificateService certificateService;
 
     public EventService(
             EventParticipantService eventParticipantService,
-            DateEventRepository dateEventRepository,
-            CertificateRepository certificateRepository,
             EventRepository repository, EventoConverter converter,
-            UserService userService,
-            UploaderFirebaseService uploaderFirebaseService
+            CertificateService certificateService
     ) {
         this.repository = repository;
         this.converter = converter;
-        this.userService = userService;
-        this.uploaderFirebaseService = uploaderFirebaseService;
         this.eventParticipantService = eventParticipantService;
+        this.certificateService = certificateService;
     }
 
     private List<EventBasicResponseDto> findAllByParticipant( final String nrUuidParticipant ) {
@@ -72,14 +70,14 @@ public class EventService {
         .collect( Collectors.toList() );
     }
 
-    public List<EventResponseDto> findAllByNrUuidResponsible(final String nrUuidResponsible ) {
+    public List<EventResponseDto> findAllByNrUuidResponsible( final String nrUuidResponsible ) {
         return repository.findAllByNrUuidResponsible( nrUuidResponsible )
         .stream()
         .map( converter::convertToDto )
         .collect( Collectors.toList() );
     }
 
-    public EventResponseDto findById(final String idEvent ) {
+    public EventResponseDto findById( final String idEvent ) {
 
         final Event event = repository.findById( idEvent ).orElseThrow(() -> new ObjectNotFoundException("Evento não encontrado"));
 
@@ -87,23 +85,41 @@ public class EventService {
 
     }
 
-    public EventResponseDto insert(final EventRequestDto evento ) {
+    public EventResponseDto insert( final EventRequestDto eventRequest ) {
 
-//        final String dsBackgroundImageUrl = uploaderFirebaseService.image( evento.getBackgroundImage() );
-//
-        Event event = converter.convertToEntity(evento);
-//
-//        event.setDsBackgroundImageUrl( dsBackgroundImageUrl );
-        
+        Event event = converter.convertToEntity( eventRequest );
+
+        AtomicInteger index = new AtomicInteger(1);
+
+        event.getDates().forEach( data -> data.setId( index.getAndIncrement() ) );
+
         Event newEvent = repository.insert( event );
 
         return converter.convertToDto(newEvent);
     }
 
-    public EventResponseDto update(final String idEvent, final EventRequestDto eventoRequest ) {
-        Event event = converter.convertToEntity( eventoRequest );
+    public EventResponseDto update( final String idEvent, final EventRequestDto eventRequest ) {
+        Event event = converter.convertToEntity( eventRequest );
         event.setIdEvent( idEvent );
         return converter.convertToDto( repository.save( event ) );
+    }
+
+    public void finished( final String idEvent ) {
+
+        final Event event = repository.findById( idEvent ).orElseThrow( () -> new ObjectNotFoundException("Evento não encontrado") );
+
+        if( event.getStatus().equals( EventStatusEnum.FINISHED ) ) {
+            throw new ObjectNotFoundException( "Evento ja finalizado!" );
+        }
+
+        event.setStatus( EventStatusEnum.FINISHED );
+
+        List<UserResponseDto> participants = eventParticipantService.findAllByIdEvent(idEvent);
+
+        certificateService.createCertificateByParticipants( participants, event );
+
+        repository.save( event );
+
     }
 
     public void delete( final String idEvent ) {

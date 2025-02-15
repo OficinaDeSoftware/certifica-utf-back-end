@@ -11,6 +11,6 @@ public class LocalDto {
 
     private Integer capacity;
 
-    private LocationCordinatesDto coordinates;
+    private LocationCoordinatesDto coordinates;
 
 }

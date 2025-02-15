@@ -3,7 +3,7 @@ package com.OficinaDeSoftware.EmissorCertificadosBackend.dto;
 import lombok.Data;
 
 @Data
-public class LocationCordinatesDto {
+public class LocationCoordinatesDto {
 
     private double latitude;
 

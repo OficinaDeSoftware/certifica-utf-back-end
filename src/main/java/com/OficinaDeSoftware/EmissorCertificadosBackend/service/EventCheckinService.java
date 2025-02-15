@@ -119,7 +119,7 @@ public class EventCheckinService {
             return timeActual.isAfter( dataEvent.getStartTime() ) && timeActual.isBefore( dataEvent.getEndTime() );
         };
 
-        event
+        final DateEvent dateEvent = event
         .getDates()
         .stream()
         .filter( isValidDate )
@@ -131,6 +131,7 @@ public class EventCheckinService {
         checkin.setDhCheckout( null );
         checkin.setIdEvent( idEvent );
         checkin.setNrUuidParticipant( checkinRequestDto.getNrUuidParticipant() );
+        checkin.setIdDateEvent( dateEvent.getId() );
 
         return converter.convertToDto( repository.insert( checkin ) );
     }
