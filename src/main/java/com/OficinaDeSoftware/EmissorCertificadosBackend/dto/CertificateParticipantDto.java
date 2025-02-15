@@ -17,4 +17,5 @@ public class CertificateParticipantDto {
 
     private String certificateUrl;
 
+    private String previewUrl;
 }

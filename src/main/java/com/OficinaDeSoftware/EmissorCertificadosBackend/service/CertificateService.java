@@ -71,6 +71,7 @@ public class CertificateService {
                         .certificateUrl( certifiedURL )
                         .nrUuidParticipant( participant.getNrUuid() )
                         .idEvent( event.getIdEvent() )
+                        .previewUrl( certificateModel.getPreviewUrl() )
                         .build();
 
                 certificateParticipantService.insert( certificateParticipant );
