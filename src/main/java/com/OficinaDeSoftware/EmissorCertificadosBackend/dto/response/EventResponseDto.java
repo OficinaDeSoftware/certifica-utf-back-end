@@ -46,5 +46,7 @@ public class EventResponseDto {
 
     private EventStatusEnum status;
 
+    private String nrUuidResponsible;
+
 }
 

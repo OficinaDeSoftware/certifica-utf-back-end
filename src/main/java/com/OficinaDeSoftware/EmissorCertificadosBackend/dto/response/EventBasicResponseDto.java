@@ -25,4 +25,6 @@ public class EventBasicResponseDto {
     private LocalDate endDate;
 
     private String backgroundUrl;
+
+    private String nrUuidResponsible;
 }

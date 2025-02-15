@@ -63,6 +63,12 @@ public class EventService {
             return findAllByParticipant( nrUuidParticipant );
         }
 
+        final String nrUuidResponsible = params.getOrDefault( "responsible", null  );
+
+        if( nrUuidResponsible != null ) {
+            return findAllByNrUuidResponsible( nrUuidResponsible );
+        }
+
         return
         repository.findAll()
         .stream()
@@ -70,10 +76,10 @@ public class EventService {
         .collect( Collectors.toList() );
     }
 
-    public List<EventResponseDto> findAllByNrUuidResponsible( final String nrUuidResponsible ) {
+    public List<EventBasicResponseDto> findAllByNrUuidResponsible( final String nrUuidResponsible ) {
         return repository.findAllByNrUuidResponsible( nrUuidResponsible )
         .stream()
-        .map( converter::convertToDto )
+        .map( converter::toBasicResponseDto )
         .collect( Collectors.toList() );
     }
 

@@ -15,19 +15,22 @@ import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.User;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
-    @Autowired
-    private UserService service;
+    private final UserService service;
 
-    @GetMapping("/findAll")
+    public UserController( UserService service ) {
+        this.service = service;
+    }
+
+    @GetMapping()
     public List<User> user(){
         return service.findAll();
     }
 
     @GetMapping("/{nrUuid}")
-    public ResponseEntity<UserResponseDto> findById(@PathVariable String nrUuid){
+    public ResponseEntity<UserResponseDto> findById( @PathVariable String nrUuid ){
         return ResponseEntity.ok(service.getByNrUuid(nrUuid));
     }
 
