@@ -31,10 +31,4 @@ public class Event {
     private EventStatusEnum status = EventStatusEnum.IN_PROGRESS;
     private String backgroundUrl;
 
-//    @Transient
-//    List<User> participantes;
-
-//    @Transient
-//    private Certificado certificado;
-
 }

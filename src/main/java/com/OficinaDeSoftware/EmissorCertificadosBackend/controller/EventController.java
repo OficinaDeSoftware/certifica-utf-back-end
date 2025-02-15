@@ -23,13 +23,8 @@ public class EventController {
     }
 
     @GetMapping( "/{idEvent}" )
-    public ResponseEntity<EventResponseDto> findOne(@PathVariable String idEvent ){
+    public ResponseEntity<EventResponseDto> findOne( @PathVariable String idEvent ){
         return ResponseEntity.ok().body( service.findById( idEvent ) );
-    }
-
-    @GetMapping( "/findAll/{nrUuidResponsible}" )
-    public ResponseEntity<List<EventResponseDto>> findAllByNrUuidResponsible( @PathVariable String nrUuidResponsible ) {
-        return ResponseEntity.ok().body( service.findAllByNrUuidResponsible( nrUuidResponsible ) );
     }
 
     @GetMapping
@@ -38,17 +33,17 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<EventResponseDto> insert(@RequestBody EventRequestDto eventRequest ) {
+    public ResponseEntity<EventResponseDto> insert( @RequestBody EventRequestDto eventRequest ) {
         return ResponseEntity.ok().body( service.insert( eventRequest ) );
     }
 
     @PutMapping("/{idEvent}")
-    public ResponseEntity<EventResponseDto> update(@PathVariable String idEvent, @RequestBody EventRequestDto eventRequest) {
+    public ResponseEntity<EventResponseDto> update( @PathVariable String idEvent, @RequestBody EventRequestDto eventRequest) {
         return ResponseEntity.ok().body( service.update( idEvent, eventRequest ) );
     }
 
     @DeleteMapping("/{idEvent}")
-    public ResponseEntity<MessageResponse> delete(@PathVariable String idEvent) {
+    public ResponseEntity<MessageResponse> delete( @PathVariable String idEvent) {
         service.delete( idEvent );
         return ResponseEntity.ok().body( new MessageResponse( "Evento deletado com sucesso!" ) );
     }
