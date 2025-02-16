@@ -6,19 +6,13 @@ import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.Event;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.ModelDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.UserResponseDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.repository.ModelRepository;
-import com.itextpdf.kernel.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.StringTemplateResolver;
-import com.itextpdf.html2pdf.HtmlConverter;
+import java.time.format.DateTimeFormatter;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -62,9 +56,11 @@ public class ModelService {
         );
     }
 
-    public Context toTagsFromEvent(final Event event ) {
+    public Context toTagsFromEvent( final Event event ) {
 
-        final String date = String.format( "De %s a %s", event.getStartDate().toString(), event.getEndDate().toString() );
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        final String date = String.format( "De %s a %s", event.getStartDate().format( formatter ), event.getEndDate().format( formatter ) );
 
         final CertificateResposible responsible = event
                 .getCertificate()

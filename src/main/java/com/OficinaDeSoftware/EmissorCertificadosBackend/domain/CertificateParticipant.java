@@ -24,4 +24,6 @@ public class CertificateParticipant {
 
     private String certificateUrl;
 
+    private String previewUrl;
+
 }
