@@ -64,6 +64,12 @@ public class EventParticipantService {
         return repository.findAllByNrUuidParticipant( nrUuidParticipant );
     }
 
+    public ParticipantSubscribedEventResponseDto isSubscribed( Map<String, String> query ) {
+        return new ParticipantSubscribedEventResponseDto(
+            repository.existsByNrUuidParticipantAndIdEvent( query.get("id"), query.get("idEvent") )
+        );
+    }
+
     public List<UserResponseDto> findAllByIdEvent( final String idEvent ) {
 
         final List<String> nrUuidParticipants = repository
