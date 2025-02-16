@@ -1,5 +1,6 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.controller;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.ParticipantSubscribedEventResponseDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.MessageResponse;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.UserResponseDto;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.EventParticipantDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.service.EventParticipantService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/event/participant")
@@ -27,7 +29,7 @@ public class EventParticipantController {
     }
 
     @DeleteMapping( "/{nrUuidParticipant}/remove" )
-    public ResponseEntity<MessageResponse> remove(@PathVariable String nrUuidParticipant, @RequestBody EventParticipantDto participant ) {
+    public ResponseEntity<MessageResponse> remove( @PathVariable String nrUuidParticipant, @RequestBody EventParticipantDto participant ) {
         service.remove( nrUuidParticipant, participant );
         return ResponseEntity.ok().body( new MessageResponse( "Participant removido com sucesso!" ) );
     }
@@ -35,6 +37,11 @@ public class EventParticipantController {
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findAllByIdEvent( @RequestParam String idEvent ) {
         return ResponseEntity.ok().body( service.findAllByIdEvent( idEvent ) );
+    }
+
+    @GetMapping("/subscribed")
+    public ResponseEntity<ParticipantSubscribedEventResponseDto> isSubscribed(  @RequestParam Map<String, String> params ) {
+        return ResponseEntity.ok( service.isSubscribed( params ) );
     }
     
 }
