@@ -5,6 +5,7 @@ import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.Event;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.EventCheckinDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.request.EventCheckinRequestDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.repository.EventRepository;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.service.exception.InternalServerError;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.service.exception.ObjectNotFoundException;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.utils.LocalDateHelper;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.utils.LocalDateTimeHelper;
@@ -18,6 +19,7 @@ import com.OficinaDeSoftware.EmissorCertificadosBackend.repository.EventCheckinR
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
 
 @Service
@@ -53,14 +55,12 @@ public class EventCheckinService {
             return true;
         }
 
-        // TODO criar umas exceptions para essa rotina
-
         if( dhCheckin == null && dhCheckout != null ){
-            throw new ObjectNotFoundException("Checkin invalido! Data de checkout existente, mas sem data de entrada! Entre em contato com o administrador.");
+            throw new InternalServerError("Checkin invalido! Data de checkout existente, mas sem data de entrada! Entre em contato com o administrador.");
         }
 
         if( dhCheckin != null && dhCheckin.isAfter( LocalDateTime.now() ) ){
-            throw new ObjectNotFoundException("Checkin invalido! Data de checkin maior que a data atual! Entre em contato com o administrador.");
+            throw new InternalServerError("Checkin invalido! Data de checkin maior que a data atual! Entre em contato com o administrador.");
         }
 
         if( dhCheckin != null && dhCheckin.isBefore( LocalDateTime.now() ) ){
@@ -93,17 +93,19 @@ public class EventCheckinService {
 
         final boolean hasRelation = eventParticipantService.existsByNrUuidParticipantAndIdEvent( checkinRequestDto.getNrUuidParticipant(), idEvent );
 
+        if( !hasRelation ) {
+            throw new ObjectNotFoundException("Participante não cadastrado ao evento!");
+        }
+
         final EventCheckin actualCheckin = repository.findByIdEventAndNrUuidParticipant( idEvent, checkinRequestDto.getNrUuidParticipant() );
 
         if( hasValidCheckin( actualCheckin ) ) {
             return converter.convertToDto( actualCheckin );
         }
 
-        if( !hasRelation ) {
-            throw new ObjectNotFoundException("Participante não cadastrado ao evento!");
-        }
-
-        Event event = eventRepository.findById( idEvent ).orElseThrow( () -> new ObjectNotFoundException("Evento não encontrado") );
+        Event event = eventRepository.findById( idEvent ).orElseThrow(
+            () -> new ObjectNotFoundException("Evento não encontrado")
+        );
 
         final LocalDate dhActual = LocalDateHelper.now();
         final LocalTime timeActual = LocalTimeHelper.now();
@@ -116,7 +118,12 @@ public class EventCheckinService {
                 return false;
             }
 
-            return timeActual.isAfter( dataEvent.getStartTime() ) && timeActual.isBefore( dataEvent.getEndTime() );
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern( "HH:mm" );
+
+            LocalTime startTime = LocalTime.parse( dataEvent.getStartTime(), formatter );
+            LocalTime endTime = LocalTime.parse( dataEvent.getEndTime(), formatter );
+
+            return ( timeActual.isAfter( startTime ) || timeActual.equals( startTime ) ) && timeActual.isBefore( endTime );
         };
 
         final DateEvent dateEvent = event
@@ -124,7 +131,7 @@ public class EventCheckinService {
         .stream()
         .filter( isValidDate )
         .findFirst()
-        .orElseThrow( () -> new ObjectNotFoundException("Nenhuma data valida do evento encontrada para o checkin!") );
+        .orElseThrow( () -> new InternalServerError("Nenhuma data valida do evento encontrada para o checkin!") );
 
         EventCheckin checkin = new EventCheckin();
         checkin.setDhCheckin( LocalDateTimeHelper.now() );
@@ -133,7 +140,7 @@ public class EventCheckinService {
         checkin.setNrUuidParticipant( checkinRequestDto.getNrUuidParticipant() );
         checkin.setIdDateEvent( dateEvent.getId() );
 
-        return converter.convertToDto( repository.insert( checkin ) );
+        return converter.convertToDto( repository.save( checkin ) );
     }
 
 }

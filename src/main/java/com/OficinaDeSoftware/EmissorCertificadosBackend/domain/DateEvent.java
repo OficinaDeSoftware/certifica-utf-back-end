@@ -22,8 +22,8 @@ public class DateEvent {
 
     private LocalDate date;
 
-    private LocalTime startTime;
+    private String startTime;
 
-    private LocalTime endTime;
+    private String endTime;
 
 }

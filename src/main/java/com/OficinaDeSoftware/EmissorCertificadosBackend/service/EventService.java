@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventParticipant;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventParticipantCountProjection;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.EventBasicResponseDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.request.EventRequestDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.UserResponseDto;
@@ -69,11 +70,21 @@ public class EventService {
             return findAllByNrUuidResponsible( nrUuidResponsible );
         }
 
-        return
-        repository.findAll()
+        List<EventParticipantCountProjection> participantsByEvent = eventParticipantService.countByIdEvent();
+
+        Map<String, Integer> participantsByEventMap = participantsByEvent.stream()
+                .collect(Collectors.toMap(EventParticipantCountProjection::id, EventParticipantCountProjection::count ));
+
+        List<EventBasicResponseDto> events = repository
+        .findAll()
         .stream()
-        .map( converter::toBasicResponseDto )
-        .collect( Collectors.toList() );
+        .map( converter::toBasicResponseDto ).toList();
+
+        events.forEach( current -> {
+            current.setParticipantsCount( participantsByEventMap.getOrDefault(current.getIdEvent(), 0));
+        });
+
+        return events;
     }
 
     public List<EventBasicResponseDto> findAllByNrUuidResponsible( final String nrUuidResponsible ) {
@@ -85,9 +96,13 @@ public class EventService {
 
     public EventResponseDto findById( final String idEvent ) {
 
-        final Event event = repository.findById( idEvent ).orElseThrow(() -> new ObjectNotFoundException("Evento não encontrado"));
+        Event event = repository.findById( idEvent ).orElseThrow(() -> new ObjectNotFoundException("Evento não encontrado"));
 
-        return converter.convertToDto( event );
+        EventResponseDto eventDto = converter.convertToDto( event );
+
+        eventDto.setParticipantsCount( eventParticipantService.findAllByIdEvent( idEvent ).size() );
+
+        return eventDto;
 
     }
 

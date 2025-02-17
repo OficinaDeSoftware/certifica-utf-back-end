@@ -17,9 +17,9 @@ public class DateEventDto {
         private LocalDate date;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-        private LocalTime startTime;
+        private String startTime;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-        private LocalTime endTime;
+        private String endTime;
 
 }

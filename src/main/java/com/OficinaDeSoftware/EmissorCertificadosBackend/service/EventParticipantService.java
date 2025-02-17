@@ -1,7 +1,10 @@
 package com.OficinaDeSoftware.EmissorCertificadosBackend.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.OficinaDeSoftware.EmissorCertificadosBackend.domain.EventParticipantCountProjection;
+import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.ParticipantSubscribedEventResponseDto;
 import com.OficinaDeSoftware.EmissorCertificadosBackend.dto.response.UserResponseDto;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +65,10 @@ public class EventParticipantService {
 
     public List<EventParticipant> findAllByNrUuidParticipant( String nrUuidParticipant ) {
         return repository.findAllByNrUuidParticipant( nrUuidParticipant );
+    }
+
+    List<EventParticipantCountProjection> countByIdEvent() {
+        return repository.countByIdEvent();
     }
 
     public ParticipantSubscribedEventResponseDto isSubscribed( Map<String, String> query ) {
