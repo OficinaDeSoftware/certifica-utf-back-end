@@ -27,4 +27,6 @@ public class EventBasicResponseDto {
     private String backgroundUrl;
 
     private String nrUuidResponsible;
+
+    private int participantsCount;
 }

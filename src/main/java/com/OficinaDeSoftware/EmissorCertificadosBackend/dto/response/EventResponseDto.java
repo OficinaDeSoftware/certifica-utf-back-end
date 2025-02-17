@@ -48,5 +48,7 @@ public class EventResponseDto {
 
     private String nrUuidResponsible;
 
+    private int participantsCount;
+
 }
 
