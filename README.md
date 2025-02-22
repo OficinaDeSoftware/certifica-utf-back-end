@@ -1,5 +1,19 @@
-# EmissorCertificadosBackend
+# CertificaUTF BackEnd
+
 Projeto de oficina de software voltado para emissão de certificados de maneira online.
+
+### Variaveis de ambiente
+
+Aqui está a tabela com exemplos para os valores que estavam em branco:
+
+| Variável             | Descrição                                | Exemplo |
+|----------------------|------------------------------------------|---------|
+| `BROKER_EMAIL`       | E-mail padrão do broker                 | `default.email` |
+| `GOOGLE_CLIENTE_ID`  | ID do Cliente do Google                 | `1234567890-abc123def456.apps.googleusercontent.com` |
+| `MONGO_URL`          | URL de conexão com o MongoDB            | `mongodb://localhost:27017/meu-banco` |
+| `RABITMQ_ADDRESS`    | URL dos servidores RabbitMQ             | `amqps://user:password@rabbitmq.example.com/vhost` |
+| `TOKEN_SECURITY_JWT` | Token de segurança para autenticação JWT | `BATATINHA123` |
+| `UTFPR_BASEURL`      | URL base dos serviços da UTFPR          | `https://coensapp.dv.utfpr.edu.br/siacoes/service` |
 
 ## Scripts nescessários
 
